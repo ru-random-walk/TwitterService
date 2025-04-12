@@ -1,4 +1,4 @@
 FROM openjdk:21-jdk
 EXPOSE 8080
-ADD build/libs/twitter-service*.jar app.jar
+ADD build/libs/TwitterService*.jar app.jar
 CMD ["java", "-jar", "/app.jar"]
