@@ -1,0 +1,18 @@
+server:
+  port: 8085
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    locations: classpath:db/local_migration, classpath:db/migration
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/random_walk_postgres
+    username: postgres
+    password: postgres
+    hikari:
+      schema: twitter
