@@ -2,6 +2,7 @@ package ru.randomwalk.twitterservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/device")
+@PreAuthorize("hasAuthority('DEFAULT_USER')")
 public class DeviceController {
 
     private final DeviceFacade deviceFacade;
