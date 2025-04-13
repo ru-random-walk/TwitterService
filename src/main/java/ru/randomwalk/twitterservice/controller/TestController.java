@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.random.walk.dto.SendNotificationEvent;
@@ -23,7 +24,7 @@ public class TestController {
 
     @PostMapping("/send-notification")
     @Operation(description = "Test endpoint for notification sending")
-    public void sendNotification(SendNotificationEvent event) {
+    public void sendNotification(@RequestBody SendNotificationEvent event) {
         try {
             notificationSendingService.sendNotification(event);
         } catch (Exception e) {
