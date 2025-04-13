@@ -1,5 +1,6 @@
 package ru.randomwalk.twitterservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -21,6 +22,7 @@ public class TestController {
     private final NotificationSendingService notificationSendingService;
 
     @PostMapping("/send-notification")
+    @Operation(description = "Test endpoint for notification sending")
     public void sendNotification(SendNotificationEvent event) {
         try {
             notificationSendingService.sendNotification(event);
