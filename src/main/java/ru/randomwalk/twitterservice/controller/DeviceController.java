@@ -1,5 +1,6 @@
 package ru.randomwalk.twitterservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,11 +25,13 @@ public class DeviceController {
     private final DeviceFacade deviceFacade;
 
     @PostMapping("/add")
+    @Operation(description = "Add device token for current authorised user")
     public void addDeviceToken(@RequestBody AddDeviceTokenRequest request, Principal principal) {
         deviceFacade.addToken(principal.getName(), request);
     }
 
     @PutMapping("/refresh")
+    @Operation(description = "Refresh existing device token for current authorised user")
     public void refreshToken(@RequestBody RefreshDeviceTokenRequest request, Principal principal) {
         deviceFacade.refreshToken(principal.getName(), request);
     }
