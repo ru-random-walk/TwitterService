@@ -33,8 +33,4 @@ public class UserAccount {
 
     @Column(name = "PUSH_DISABLED")
     private boolean pushDisabled = false;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private List<Device> devices = new ArrayList<>();
 }

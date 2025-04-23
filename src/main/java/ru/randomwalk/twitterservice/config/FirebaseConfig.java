@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
+@Profile("!local")
 public class FirebaseConfig {
 
     @Value("${firebase.credentials}")

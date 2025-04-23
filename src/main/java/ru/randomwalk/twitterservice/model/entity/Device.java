@@ -2,9 +2,12 @@ package ru.randomwalk.twitterservice.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,8 +34,9 @@ public class Device {
     @Column(name = "DEVICE_TOKEN")
     private String deviceToken;
 
-    @Column(name = "USER_ID")
-    private UUID userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private UserAccount user;
 
     @Column(name = "CREATED_AT")
     @CreationTimestamp
