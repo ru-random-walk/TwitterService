@@ -25,7 +25,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public List<Device> getDevicesByUserId(UUID userId) {
-        return deviceRepository.findAllByUserId(userId);
+        return deviceRepository.findAllByUser_UserId(userId);
     }
 
     @Override
@@ -40,33 +40,30 @@ public class DeviceServiceImpl implements DeviceService {
         var user = userAccountRepository.findById(userId)
                 .orElseGet(() -> createNewUser(userId));
 
-        if (deviceRepository.existsByUserIdAndDeviceToken(userId, deviceToken)) {
+        if (deviceRepository.existsByUser_UserIdAndDeviceToken(userId, deviceToken)) {
             log.warn("Device with provided token already exists");
             return;
         }
 
-        var device = createDevice(userId, deviceToken);
-        user.getDevices().add(device);
-        userAccountRepository.save(user);
-
+        var device = createDevice(user, deviceToken);
         log.info("Device with id {} were added for user {}", device.getId(), userId);
     }
 
     @Override
     public void refreshExistingToken(UUID userId, String previousToken, String newToken) {
         log.info("Refreshing existing token for user {}", userId);
-        var device = deviceRepository.findByUserIdAndDeviceToken(userId, previousToken)
+        var device = deviceRepository.findByUser_UserIdAndDeviceToken(userId, previousToken)
                 .orElseThrow(() -> new NotFoundException("Device with provided token does not exist"));
         device.setDeviceToken(newToken);
         deviceRepository.save(device);
         log.info("Token was refreshed for device {}", device.getId());
     }
 
-    private Device createDevice(UUID userId, String deviceToken) {
+    private Device createDevice(UserAccount user, String deviceToken) {
         var device = new Device();
-        device.setUserId(userId);
         device.setDeviceToken(deviceToken);
         device.setCreatedAt(LocalDateTime.now());
+        device.setUser(user);
         return deviceRepository.save(device);
     }
 
@@ -74,6 +71,6 @@ public class DeviceServiceImpl implements DeviceService {
         log.info("Registering new user {}", userId);
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
-        return userAccount;
+        return userAccountRepository.save(userAccount);
     }
 }
