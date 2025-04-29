@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.random.walk.dto.SendEmailEvent;
 import ru.random.walk.dto.SendNotificationEvent;
+import ru.randomwalk.twitterservice.service.EmailService;
 import ru.randomwalk.twitterservice.service.NotificationSendingService;
 
 @RestController
@@ -21,6 +23,7 @@ import ru.randomwalk.twitterservice.service.NotificationSendingService;
 public class TestController {
 
     private final NotificationSendingService notificationSendingService;
+    private final EmailService emailService;
 
     @PostMapping("/send-notification")
     @Operation(description = "Test endpoint for notification sending")
@@ -31,5 +34,11 @@ public class TestController {
             log.error("Exception sending notification {}", event, e);
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/send-email")
+    @Operation(description = "Test endpoint for email sending")
+    public void sendEmail(@RequestBody SendEmailEvent event) {
+        emailService.sendEmail(event.recipient(), event.subject(), event.body(), event.isHtml());
     }
 }
