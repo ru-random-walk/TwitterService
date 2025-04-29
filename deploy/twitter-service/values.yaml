@@ -37,6 +37,14 @@ secrets:
     secret_key: FIREBASE_CREDENTIALS
     secret_name: twitter-secret
 
+  - name: MAIL_APP_PASSWORD
+    secret_key: MAIL_APP_PASSWORD
+    secret_name: twitter-secret
+
+  - name: MAIL_USERNAME
+    secret_key: MAIL_USERNAME
+    secret_name: twitter-secret
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
