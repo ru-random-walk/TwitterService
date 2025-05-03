@@ -14,8 +14,10 @@ import ru.randomwalk.twitterservice.service.NotificationSendingService;
 import ru.randomwalk.twitterservice.service.DeviceService;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
@@ -51,13 +53,15 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
             Message message = Message.builder()
                     .setNotification(notification)
                     .setToken(device.getDeviceToken())
-                    .putAllData(additionalData)
+                    .putAllData(Objects.requireNonNullElseGet(additionalData, HashMap::new))
                     .build();
             String messageId = FirebaseMessaging.getInstance().send(message);
             log.info("Message {} were sent with id {}", message, messageId);
         } catch (FirebaseMessagingException firebaseException) {
             log.warn("Error sending notification {}", notification, firebaseException);
             expireToken(firebaseException, device);
+        } catch (Exception e) {
+            log.error("Exception in task with virtual thread", e);
         }
     }
 
