@@ -14,7 +14,7 @@ import ru.randomwalk.twitterservice.model.exception.NotFoundException;
 public class TwitterControllerAdvice {
 
     @ExceptionHandler({NotFoundException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiErrorDto> exceptionHandler(NotFoundException e) {
         log.warn("Handle not found exception", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
