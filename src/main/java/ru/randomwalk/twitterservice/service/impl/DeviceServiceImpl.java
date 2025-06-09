@@ -52,11 +52,15 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void refreshExistingToken(UUID userId, String previousToken, String newToken) {
         log.info("Refreshing existing token for user {}", userId);
-        var device = deviceRepository.findByUser_UserIdAndDeviceToken(userId, previousToken)
-                .orElseThrow(() -> new NotFoundException("Device with provided token does not exist"));
-        device.setDeviceToken(newToken);
-        deviceRepository.save(device);
-        log.info("Token was refreshed for device {}", device.getId());
+        var optionalDevice = deviceRepository.findByUser_UserIdAndDeviceToken(userId, previousToken);
+        if (optionalDevice.isPresent()) {
+            var device = optionalDevice.get();
+            device.setDeviceToken(newToken);
+            deviceRepository.save(device);
+            log.info("Token was refreshed for device {}", device.getId());
+        } else {
+            addNewDeviceToken(userId, newToken);
+        }
     }
 
     private Device createDevice(UserAccount user, String deviceToken) {

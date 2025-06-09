@@ -87,4 +87,17 @@ class DeviceServiceImplTest extends AbstractContainerTest {
         var device = deviceRepository.findById(deviceId).get();
         assertEquals(newToken, device.getDeviceToken());
     }
+
+    @Test
+    void createNewTokenIfNothingToRefresh() {
+        String deviceToken = "some device token";
+        UUID userId = UUID.randomUUID();
+        String newToken = "new token";
+
+        deviceService.refreshExistingToken(userId, deviceToken, newToken);
+
+        var device = deviceRepository.findByUser_UserIdAndDeviceToken(userId, newToken);
+        assertTrue(device.isPresent());
+        assertEquals(userId, device.get().getUser().getUserId());
+    }
 }
